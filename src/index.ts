@@ -9,6 +9,11 @@ const app = new Hono<{ Bindings: MeteringEnv }>()
 
 app.get('/health', (c) => c.json({ ok: true }))
 
+// Domain ownership proof for the official MCP Registry (dev.toriigate/* namespace)
+app.get('/.well-known/mcp-registry-auth', (c) =>
+  c.text('v=MCPv1; k=ed25519; p=elEa7SN1dMikTw4rJEEWuCtezNU44FXKaFL4vfcpVZM='),
+)
+
 app.get('/llms.txt', (c) => {
   c.executionCtx.waitUntil(recordDiscovery(c.env, c.req.raw, 'platform'))
   return c.text(renderLlmsTxt(originOf(c.req.url)))
