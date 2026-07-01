@@ -4,6 +4,8 @@
   "name": "toriigate-platform",
   "main": "src/index.ts",
   "compatibility_date": "2025-12-01",
-  "compatibility_flags": ["nodejs_compat"]
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": false,
+  "routes": [{ "pattern": "toriigate.dev", "custom_domain": true }]
   // Analytics Engine (METERING) and D1 bindings land with the metering milestone.
 }

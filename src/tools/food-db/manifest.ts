@@ -1,15 +1,15 @@
 import { z } from 'zod'
 import type { ToolManifest } from '../../core/manifest'
-import { DISCLAIMER, getFood, searchFoods } from './data'
+import { DISCLAIMER, LICENSE, RETRIEVED_AT, SOURCE, getFood, searchFoods } from './data'
 
 export const foodDb: ToolManifest = {
   slug: 'food-db',
   name: 'Japan Food DB',
-  version: '0.1.0',
+  version: '0.2.0',
   description:
-    'Resolve Japanese food names (including fuzzy/colloquial forms) to nutrition facts ' +
-    'per 100g, based on the official Standard Tables of Food Composition in Japan. ' +
-    'Covers foods that USDA and Open Food Facts do not.',
+    'Resolve Japanese food names (including fuzzy/colloquial forms like ごはん or サラダチキン) ' +
+    'to nutrition facts per 100g. All 2,538 foods from the official Standard Tables of ' +
+    'Food Composition in Japan. Covers foods that USDA and Open Food Facts do not.',
   descriptionJa:
     '日本語の食品名(曖昧・口語含む)を栄養成分(100gあたり)に解決する。文科省の食品標準成分表ベース。',
   pricing: { model: 'free' },
@@ -35,7 +35,7 @@ export const foodDb: ToolManifest = {
       },
       async ({ query, limit }) => {
         const results = searchFoods(query, limit ?? 5)
-        return jsonResult({ results, disclaimer: DISCLAIMER })
+        return jsonResult({ results, ...provenance() })
       },
     )
 
@@ -53,10 +53,19 @@ export const foodDb: ToolManifest = {
         if (!record) {
           return jsonResult({ error: `unknown food id: ${id}` }, true)
         }
-        return jsonResult({ food: record, disclaimer: DISCLAIMER })
+        return jsonResult({ food: record, ...provenance() })
       },
     )
   },
+}
+
+function provenance() {
+  return {
+    source: SOURCE,
+    license: LICENSE,
+    retrievedAt: RETRIEVED_AT,
+    disclaimer: DISCLAIMER,
+  }
 }
 
 function jsonResult(payload: object, isError = false) {
