@@ -1,0 +1,9 @@
+{
+  // Torii Gate Platform — runs on the Cloudflare Workers free plan by design.
+  // The free plan's hard request cap doubles as a budget guard: overflow fails, never bills.
+  "name": "toriigate-platform",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-12-01",
+  "compatibility_flags": ["nodejs_compat"]
+  // Analytics Engine (METERING) and D1 bindings land with the metering milestone.
+}
