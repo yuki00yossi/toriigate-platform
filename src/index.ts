@@ -14,6 +14,30 @@ app.get('/.well-known/mcp-registry-auth', (c) =>
   c.text('v=MCPv1; k=ed25519; p=elEa7SN1dMikTw4rJEEWuCtezNU44FXKaFL4vfcpVZM='),
 )
 
+// Public aggregated funnel stats — counts only, no client data (build in public)
+app.get('/stats', async (c) => {
+  if (!c.env.DB) return c.json({ error: 'stats unavailable' }, 503)
+  const since = "strftime('%Y-%m-%dT%H:%M:%S', 'now', '-7 days')"
+  const [week, total, uniq] = await Promise.all([
+    c.env.DB.prepare(
+      `SELECT tool, stage, COUNT(*) AS n FROM funnel_events WHERE ts >= ${since} GROUP BY tool, stage`,
+    ).all<{ tool: string; stage: string; n: number }>(),
+    c.env.DB.prepare(
+      'SELECT tool, stage, COUNT(*) AS n FROM funnel_events GROUP BY tool, stage',
+    ).all<{ tool: string; stage: string; n: number }>(),
+    c.env.DB.prepare(
+      `SELECT COUNT(DISTINCT client_hash) AS n FROM funnel_events WHERE ts >= ${since}`,
+    ).first<{ n: number }>(),
+  ])
+  c.header('Cache-Control', 'public, max-age=300')
+  return c.json({
+    generatedAt: new Date().toISOString(),
+    last7Days: week.results,
+    allTime: total.results,
+    uniqueClients7d: uniq?.n ?? 0,
+  })
+})
+
 app.get('/llms.txt', (c) => {
   c.executionCtx.waitUntil(recordDiscovery(c.env, c.req.raw, 'platform'))
   return c.text(renderLlmsTxt(originOf(c.req.url)))
