@@ -7,24 +7,47 @@ export interface FunnelEvent {
   readonly userAgent: string
 }
 
-interface MeteringEnv {
-  readonly METERING?: AnalyticsEngineDataset
+export interface MeteringEnv {
+  readonly DB?: D1Database
 }
 
 /**
- * Funnel tracking: discovery → connect → call.
- * Falls back to structured console logs until an Analytics Engine dataset is bound.
+ * Funnel tracking: discovery → connect → call, persisted to D1.
  * A "paid" stage is added together with the billing layer.
+ * Callers should pass the returned promise to executionCtx.waitUntil().
  */
-export function recordEvent(env: MeteringEnv, event: FunnelEvent): void {
-  if (env.METERING) {
-    env.METERING.writeDataPoint({
-      blobs: [event.tool, event.stage, event.userAgent],
-      indexes: [event.clientIp],
-    })
+export async function recordEvent(env: MeteringEnv, event: FunnelEvent): Promise<void> {
+  if (!env.DB) {
+    console.log(JSON.stringify({ type: 'funnel', ...event }))
     return
   }
-  console.log(JSON.stringify({ type: 'funnel', ...event }))
+  try {
+    const clientHash = await hashClient(event.clientIp)
+    await env.DB.prepare(
+      'INSERT INTO funnel_events (ts, tool, stage, client_hash, user_agent) VALUES (?, ?, ?, ?, ?)',
+    )
+      .bind(
+        new Date().toISOString(),
+        event.tool,
+        event.stage,
+        clientHash,
+        event.userAgent.slice(0, 200),
+      )
+      .run()
+  } catch (error) {
+    // Metering must never break the request path — log and continue.
+    console.error('metering failed:', error instanceof Error ? error.message : String(error))
+  }
+}
+
+/** IPs are stored only as truncated salted hashes — enough for unique-caller counts. */
+async function hashClient(ip: string): Promise<string> {
+  const data = new TextEncoder().encode(`toriigate:${ip}`)
+  const digest = await crypto.subtle.digest('SHA-256', data)
+  return [...new Uint8Array(digest)]
+    .slice(0, 8)
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('')
 }
 
 /** Peek at the JSON-RPC body to extract the MCP method name (for metering). */

@@ -6,6 +6,12 @@
   "compatibility_date": "2025-12-01",
   "compatibility_flags": ["nodejs_compat"],
   "workers_dev": false,
-  "routes": [{ "pattern": "toriigate.dev", "custom_domain": true }]
-  // Analytics Engine (METERING) and D1 bindings land with the metering milestone.
+  "routes": [{ "pattern": "toriigate.dev", "custom_domain": true }],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "toriigate-metering",
+      "database_id": "2304c605-881c-4c0d-a2c0-96dc8bc3b88c"
+    }
+  ]
 }
