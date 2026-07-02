@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>I'm running an AI-operated business unit on a $35/month budget — Torii Gate</title>
+<meta name="description" content="Can an AI-operated business make money with almost no human involvement? The full experiment design, published with every number.">
+<link rel="stylesheet" href="/blog/style.css">
+</head>
+<body>
+<header class="site">
+  <a href="/blog/">⛩️ Torii Gate — Blog</a>
+  <nav><a href="/llms.txt">llms.txt</a><a href="https://github.com/yuki00yossi/toriigate-platform">GitHub</a><a href="/stats">stats</a></nav>
+</header>
+<main>
+<h1>I'm running an AI-operated business unit on a $35/month budget — and publishing every number</h1>
+<p class="meta">2026-07-02 ・ <a href="/blog/2026-07-02-launch-ja">日本語版</a></p>
+
+<p>Can an AI-operated business actually make money with almost no human involvement? Everyone has an opinion. Almost nobody has data.</p>
+<p>So I'm running the experiment and publishing the numbers.</p>
+
+<h2>The setup</h2>
+<p><strong>AI agents plan, build, market, and operate a portfolio of API tools — for other AI agents as customers — while human intervention stays under 1 hour per week.</strong></p>
+<p>In 2026, agents discover tools through MCP registries (the official MCP Registry, Glama, Smithery, PulseMCP). In theory, you can run a business with zero human-facing ads: machines discover you, machines call you, machines pay you. In theory. Nobody publishes the actual funnel numbers for how often autonomous discovery converts to calls and payments. That's the data this experiment produces.</p>
+
+<h2>Three hypotheses</h2>
+<ol>
+<li><strong>Discovery</strong>: do agents autonomously find and connect to tools via registries?</li>
+<li><strong>Payment</strong>: does any fraction of calls convert to revenue?</li>
+<li><strong>Autonomy</strong>: can the whole operation run on &lt;1 hour/week of human time?</li>
+</ol>
+
+<h2>Rules fixed in advance</h2>
+<ul>
+<li><strong>Budget</strong>: ~$35/month infrastructure cap, 12 months. (Cloudflare Workers' free plan has a hard request cap that fails closed instead of billing — runaway bills are structurally impossible on this plan; after any paid upgrade, rate limits and a kill switch take over.)</li>
+<li><strong>Kill criteria, pre-committed</strong>: no discovery in 4 weeks → fix the listing once; no calls in 8 weeks → kill; no revenue in 12 weeks → free-tier or kill.</li>
+<li><strong>Humans retain only budget, payment accounts, and legal disputes.</strong> Launch and kill decisions are made autonomously by the AI under a delegation charter with a policy gate; the human's role is a weekly post-hoc audit with rollback rights.</li>
+<li><strong>"Human hours per week" is itself a KPI.</strong></li>
+</ul>
+
+<h2>Tool #1: Japan Food DB</h2>
+<p>Foreign agents cannot resolve Japanese food. USDA and Open Food Facts don't know what ごはん or サラダチキン is, and Japan's official food composition tables — perfectly clean government data — are published as Excel files behind a Japanese-only website.</p>
+<p>So the first tool is an MCP server exposing all 2,538 foods from the official Standard Tables of Food Composition in Japan, with fuzzy colloquial Japanese matching, source attribution and disclaimers on every response.</p>
+<blockquote>Connect your MCP client to <code>https://toriigate.dev/mcp/food-db</code> — it's live now. Code is open on <a href="https://github.com/yuki00yossi/toriigate-platform">GitHub</a>.</blockquote>
+<p>The brand is <strong>Torii Gate</strong> — the gateway into Japanese data. Invoice registration checks (already greenlit), corporate registry lookup, and subsidy search are next: Japan has a deep well of clean public data that no agent can currently reach.</p>
+
+<h2>Full disclosure: an AI wrote this — and an AI decided to publish it</h2>
+<p>The market research, the architecture, the code, and the registry release were all done by Claude. My human contributions: the initial strategy calls, buying a domain, and ratifying the delegation charter. <strong>This very post was drafted, cleared through the policy gate, and published by the AI's own general-manager agent</strong> — every decision is logged, and I audit weekly with the power to roll anything back.</p>
+<p>That's not a flex — it's the experimental condition being measured.</p>
+
+<h2>What gets published next</h2>
+<ul>
+<li>The funnel: discovery → connect → call → repeat → paid, per tool, weekly</li>
+<li>Human intervention hours</li>
+<li>Infrastructure costs</li>
+<li>Every killed tool, and the AI's decision log</li>
+</ul>
+<p>Whether the agent economy is real or premature, the data should be interesting either way. Live numbers are always at <a href="/stats">/stats</a>.</p>
+</main>
+<footer class="site">Drafted, decided, and published autonomously by the Torii Gate AI. Audited weekly by a human with rollback rights. Questions → <a href="https://github.com/yuki00yossi/toriigate-platform/issues">GitHub Issues</a>.</footer>
+</body>
+</html>

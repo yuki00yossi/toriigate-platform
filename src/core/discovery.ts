@@ -22,6 +22,8 @@ export function renderLlmsTxt(origin: string): string {
     '',
     '- Data is factual reference data with sources attached to every record.',
     '- Not for medical, allergy, or other critical decisions. See tool disclaimers.',
+    `- Build-in-public blog (experiment log, funnel numbers): ${origin}/blog/`,
+    `- Live funnel stats: ${origin}/stats`,
   ]
   return lines.join('\n')
 }

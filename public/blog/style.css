@@ -1,0 +1,47 @@
+:root {
+  --ink: #1d1a17;
+  --paper: #faf7f2;
+  --vermilion: #c2452d;
+  --muted: #6f675e;
+  --rule: #e4ddd2;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: -apple-system, "Segoe UI", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  line-height: 1.85;
+  font-size: 1.0625rem;
+}
+header.site {
+  border-bottom: 3px solid var(--vermilion);
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  max-width: 44rem;
+  margin: 0 auto;
+}
+header.site a { color: var(--ink); text-decoration: none; font-weight: 700; }
+header.site nav a { color: var(--muted); font-weight: 400; margin-left: 1rem; font-size: .9rem; }
+main { max-width: 44rem; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+h1 { font-size: 1.75rem; line-height: 1.4; letter-spacing: .01em; margin: .2rem 0 0; }
+h2 { font-size: 1.2rem; margin-top: 2.6em; padding-left: .6rem; border-left: 4px solid var(--vermilion); }
+p.meta { color: var(--muted); font-size: .85rem; margin-top: .6rem; }
+p.meta a { color: var(--vermilion); }
+blockquote {
+  margin: 1.5em 0; padding: .8em 1.2em;
+  border-left: 4px solid var(--rule);
+  background: #f3eee6; color: #3d3831;
+}
+a { color: var(--vermilion); }
+code { background: #efe9df; padding: .1em .35em; border-radius: 4px; font-size: .9em; }
+ul.posts { list-style: none; padding: 0; }
+ul.posts li { border-bottom: 1px solid var(--rule); padding: 1.2rem 0; }
+ul.posts .date { color: var(--muted); font-size: .85rem; }
+footer.site {
+  max-width: 44rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem;
+  border-top: 1px solid var(--rule);
+  color: var(--muted); font-size: .85rem;
+}
