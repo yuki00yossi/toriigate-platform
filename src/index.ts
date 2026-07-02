@@ -66,11 +66,16 @@ app.all('/mcp/:tool', async (c) => {
 
   if (c.req.method === 'POST') {
     const method = await peekJsonRpcMethod(c.req.raw)
-    if (method === 'initialize' || method === 'tools/call') {
+    const stage =
+      method === 'initialize' ? 'connect'
+      : method === 'tools/list' ? 'browse'
+      : method === 'tools/call' ? 'call'
+      : null
+    if (stage) {
       c.executionCtx.waitUntil(
         recordEvent(c.env, {
           tool: manifest.slug,
-          stage: method === 'initialize' ? 'connect' : 'call',
+          stage,
           clientIp,
           userAgent: c.req.header('user-agent') ?? '',
         }),

@@ -1,4 +1,4 @@
-export type FunnelStage = 'discovery' | 'connect' | 'call'
+export type FunnelStage = 'discovery' | 'connect' | 'browse' | 'call'
 
 export interface FunnelEvent {
   readonly tool: string
